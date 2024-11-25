@@ -11,5 +11,40 @@
   justify-content: center;
   font-size: calc(30px + 2vmin);
   color: white;
+  /* ➀切り替えボタン */
+.buttons{
+    margin: 50px auto;   /* 上下 50px 空け、左右中央に配置 */
+    width: 210px;        /* 横幅 210px */
+}
+
+/* ➁ボタン単体 */
+.button{
+    width: 100px;               /* 横幅 210px */
+    height: 30px;               /* 縦幅 30px */
+}
+
+/* Aボタン */
+#a_btn{
+    color: white;           /* 文字色：白 */
+    background-color: red;  /* 背景色：赤 */
+}
+
+/* Aボタン active */
+#a_btn.active{
+    color: black;             /* 文字色：黒 */
+    background-color: white;  /* 文字色：白 */
+}
+
+/* Bボタン */
+#b_btn{
+    color: black;             /* 文字色：黒 */
+    background-color: white;  /* 文字色：白 */
+}
+
+/* Bボタン active */
+#b_btn.active{
+    color: white;            /* 文字色：白 */
+    background-color: blue;  /* 背景色：青 */
+}
 }
 
