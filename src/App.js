@@ -5,8 +5,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Welcome to My Amplify App!!!!!</h1>
-        <p>Deploy your React app with AWS Amplify!</p>
+        <h1>yokoyama</h1>
+        <p>Deploytoshiki</p>
       </header>
     </div>
   );
