@@ -8,6 +8,11 @@ function App() {
         <h1>yokoyama</h1>
         <p>toshiki</p>
       </header>
+    // Aボタン
+const buttonA = document.getElementById('a_btn');
+
+// Bボタン
+const buttonB = document.getElementById('b_btn');
     </div>
   );
 }
