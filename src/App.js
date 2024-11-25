@@ -6,7 +6,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>yokoyama</h1>
-        <p>Deploytoshiki</p>
+        <p>toshiki</p>
       </header>
     </div>
   );
