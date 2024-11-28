@@ -11,6 +11,14 @@
   justify-content: center;
   font-size: calc(30px + 2vmin);
   color: white;
- 
+
+  .my-up-button {
+  color: #fff;
+  border: 1px solid #fff;
+  }
+  .my-down-button {
+  color: #fff;
+  border: 1px solid #fff;
+  
 }
 
