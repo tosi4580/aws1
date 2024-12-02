@@ -7,12 +7,13 @@ function App() {
       <header className="App-header">
         <h1>yokoyama</h1>
         <p>toshiki</p>
-    <a on Click={this.handleClick1}>上り</a>
+    </a> 
+    <a on Click={this.handleClick}>上り</a>
       </header>
     </div>
   );
 
-handleClick1() {
+handleClick() {
     alert('Click!')
   }
 }
