@@ -7,8 +7,7 @@ function App() {
       <header className="App-header">
         <h1>yokoyama</h1>
         <p>toshiki</p>
-    </a> 
-    <a on Click={this.handleClick}>上り</a>
+    <a onClick={this.handleClick}>上り< /a>
       </header>
     </div>
   );
