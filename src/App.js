@@ -7,11 +7,21 @@ function App() {
       <header className="App-header">
         <h1>yokoyama</h1>
         <p>toshiki</p>
-    <a class="my-up-button" href="#">上り</a>
-    <b class="my-down-button" href="#">下り</b>
+    </a> 
+      <a on Click={this.handleClick1}>上り</a>
+    </b>
+      <b on Click={this.handleClick2}>下り</b>
       </header>
-
     </div>
   );
+}
+handleClick1() {
+    alert('Click!')
+  }
+handleClick2() {
+    alert('Click!!')
+  }
+
+
 }
 export default App;
