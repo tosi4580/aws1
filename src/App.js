@@ -15,7 +15,7 @@ function App() {
         <h1>aws</h1>
         <p>web</p>
         <a onClick={handleClick1}>多摩センター行き</a>
-        <b onClick={handleClick2}}上北台行き</b>
+        <b onClick={handleClick2}>上北台行き</b>
       </header>
     </div>
   );
