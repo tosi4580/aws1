@@ -2,6 +2,17 @@ import React from 'react';
 import './App.css';
 
 function App() {
+  export default function Button() {
+  function handleClick() {
+    alert('You clicked me!');
+  }
+
+  return (
+    <button onClick={handleClick}>
+      Click me
+    </button>
+  );
+}
   return (
     <div className="App">
       <header className="App-header">
@@ -12,17 +23,6 @@ function App() {
       </header>
 
     </div>
-  );
-}
-export default function Button() {
-  function handleClick() {
-    alert('You clicked me!');
-  }
-
-  return (
-    <button onClick={handleClick}>
-      Click me
-    </button>
   );
 }
 
