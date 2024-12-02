@@ -17,11 +17,11 @@ a {
   color: #61dafb; 
   text-decoration: none; 
   cursor: pointer; 
-  padding: 10px 20px; 
+  padding: 8px 16px; 
   background-color: #4CAF50; 
   color: white;  
   border: none; 
-  border-radius: 5px;  
+  border-radius: 4px;  
   transition: background-color 0.3s ease;
 } 
 a:hover { 
@@ -32,11 +32,11 @@ b {
   color: #f58f98; 
   text-decoration: none; 
   cursor: pointer; 
-  padding: 10px 20px; 
-  background-color: #4CAF50; 
+  padding: 8px 16px; 
+  background-color: #f58f98; 
   color: white;  
   border: none; 
-  border-radius: 5px;  
+  border-radius: 4px;  
   transition: background-color 0.3s ease; 
 } 
 b:hover { 
