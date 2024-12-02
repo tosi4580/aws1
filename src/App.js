@@ -12,7 +12,7 @@ function App() {
     </div>
   );
 
-handleClick() {
+handleClick(); {
     alert('Click!')
   }
 }
