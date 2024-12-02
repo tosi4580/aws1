@@ -11,14 +11,34 @@
   justify-content: center;
   font-size: calc(30px + 2vmin);
   color: white;
-
-  .my-up-button {
-  color: #fff;
-  border: 1px solid #fff;
-  }
-  .my-down-button {
-  color: #fff;
-  border: 1px solid #fff;
-  }
 }
 
+a { 
+  color: #61dafb; 
+  text-decoration: none; 
+  cursor: pointer; 
+  padding: 10px 20px; 
+  background-color: #4CAF50; 
+  color: white;  
+  border: none; 
+  border-radius: 5px;  
+  transition: background-color 0.3s ease;
+} 
+a:hover { 
+  background-color: #45a049;
+}
+
+b { 
+  color: #f58f98; 
+  text-decoration: none; 
+  cursor: pointer; 
+  padding: 10px 20px; 
+  background-color: #4CAF50; 
+  color: white;  
+  border: none; 
+  border-radius: 5px;  
+  transition: background-color 0.3s ease; 
+} 
+b:hover { 
+  background-color: #45a049;
+}
