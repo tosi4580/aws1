@@ -10,12 +10,15 @@ function App() {
   const [southboundTimetable, setSouthboundTimetable] = useState([]);
   const [loading, setLoading] = useState(false); // ローディング状態を追加
   const [currentTime, setCurrentTime] = useState(""); // 現在の時刻を保存
+  const [currentTimePlus10, setCurrentTimePlus10] = useState(""); // 現在の時刻にプラス10分した時刻を保存
 
   const fetchTimetable = async (direction) => {
     setLoading(true); // ローディング状態を設定
     try {
       const now = new Date();
       setCurrentTime(now.toLocaleTimeString()); // 現在の時刻を保存
+      const nowPlus10 = new Date(now.getTime() + 10 * 60000); // 現在の時刻に10分追加
+      setCurrentTimePlus10(nowPlus10.toLocaleTimeString()); // 現在の時刻にプラス10分した時刻を保存
       now.setHours(now.getHours() + 9); 
       now.setMinutes(now.getMinutes() + 10); 
       const timeString = now.toTimeString().substr(0, 5); 
@@ -40,7 +43,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>次の電車</h1>
-        <div>次の電車は {currentTime}</div>
+        <div>次の電車は {currentTime} ({currentTimePlus10} に出発予定)</div>
         <div className="button-container">
           <button onClick={() => fetchTimetable('Northbound')} disabled={loading} className="fetch-button">
             {loading ? '読み込み中...' : '上北台行き'}
@@ -49,27 +52,25 @@ function App() {
             {loading ? '読み込み中...' : '多摩センター行き'}
           </button>
         </div>
-        <div>
-          <h2>上北台行き (北行き)</h2>
-          <ul>
-            {northboundTimetable.map((item, index) => (
-              <li key={index}>
-                {item.station} - {item.departureTime} - {item.destinationStation}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h2>多摩センター行き (南行き)</h2>
-          <ul>
-            {southboundTimetable.map((item, index) => (
-              <li key={index}>
-                {item.station} - {item.departureTime} - {item.destinationStation}
-              </li>
-            ))}
-          </ul>
-        </div>
       </header>
+      <div>
+        <ul>
+          {northboundTimetable.map((item, index) => (
+            <li key={index}>
+              {item.station} - {item.departureTime} - {item.destinationStation}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <ul>
+          {southboundTimetable.map((item, index) => (
+            <li key={index}>
+              {item.station} - {item.departureTime} - {item.destinationStation}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
