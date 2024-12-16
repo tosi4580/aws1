@@ -2,6 +2,11 @@
   text-align: center;
 }
 
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -9,32 +14,33 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(30px + 2vmin);
+  font-size: calc(10px + 2vmin);
   color: white;
 }
 
-/* リンクボタンのスタイル */
-a { 
-  color: #61dafb; 
-  text-decoration: none; 
-  cursor: pointer; 
-  padding: 8px 16px; 
-  background-color: #4CAF50; 
-  color: white;  
-  border: none; 
-  border-radius: 4px;  
-  transition: background-color 0.3s ease;
+.App-link {
+  color: #61dafb;
 }
 
-a:hover { 
-  background-color: #005D4D ;
+.fetch-button {
+  cursor: pointer;
+  padding: 16px 32px; /* ボタンを大きく */
+  margin: 10px;
+  font-size: 1.2em; /* ボタンのテキストサイズを大きく */
+  border-radius: 5px;
+  border: none;
+  background-color: #ffcc00; /* 適切な背景色を指定 */
+  color: #000; /* テキスト色 */
+  transition: background-color 0.3s;
 }
 
-/* 太字ボタンのスタイル */
-b { 
-  color: #f58f98; 
-  text-decoration: none; 
-  cursor: pointer; 
-  padding: 8px 16px; 
-  background: #ffcc00;
+.fetch-button:hover {
+  background-color: #ffaa00; /* ホバー時の背景色 */
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px 0;
 }
