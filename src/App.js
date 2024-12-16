@@ -17,9 +17,9 @@ function App() {
   const fetchTimetable = async () => {
     try {
       const now = new Date();
-      now.setHours(now.getHours() + 9); // JSTに変換するために9時間を加算.
-      now.setMinutes(now.getMinutes() + 10); // さらに10分を加算
-      const timeString = now.toTimeString().substr(0, 5); // 時間をHH:MM形式に変換
+      now.setHours(now.getHours() + 9); 
+      now.setMinutes(now.getMinutes() + 10); 
+      const timeString = now.toTimeString().substr(0, 5); 
       const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/TimeTable?time=${timeString}`;
 
       const response = await fetch(apiUrl);
