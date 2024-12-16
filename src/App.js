@@ -41,12 +41,14 @@ function App() {
       <header className="App-header">
         <h1>次の電車</h1>
         <div>次の電車は {currentTime}</div>
-        <button onClick={() => fetchTimetable('Northbound')} disabled={loading} className="fetch-button">
-          {loading ? '読み込み中...' : '上北台行き'}
-        </button>
-        <button onClick={() => fetchTimetable('Southbound')} disabled={loading} className="fetch-button">
-          {loading ? '読み込み中...' : '多摩センター行き'}
-        </button>
+        <div className="button-container">
+          <button onClick={() => fetchTimetable('Northbound')} disabled={loading} className="fetch-button">
+            {loading ? '読み込み中...' : '上北台行き'}
+          </button>
+          <button onClick={() => fetchTimetable('Southbound')} disabled={loading} className="fetch-button">
+            {loading ? '読み込み中...' : '多摩センター行き'}
+          </button>
+        </div>
         <div>
           <h2>上北台行き (北行き)</h2>
           <ul>
