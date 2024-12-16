@@ -16,7 +16,7 @@ function App() {
       now.setHours(now.getHours() + 9); // JSTに変換するために9時間を加算
       now.setMinutes(now.getMinutes() + 10); // さらに10分を加算
       const timeString = now.toTimeString().substr(0, 5); // 時間をHH:MM形式に変換
-      const apiUrl = `arn:aws:execute-api:ap-northeast-1:127214172620:xy2igd6s8k/*/*/myTT`;
+      const apiUrl = `arn:aws:execute-api:ap-northeast-1:127214172620:xy2igd6s8k/*/GET/myTT`;
 
 
       // API.getの呼び出し部分
