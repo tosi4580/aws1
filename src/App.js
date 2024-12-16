@@ -9,14 +9,14 @@ function App() {
   const [northboundTimetable, setNorthboundTimetable] = useState([]);
   const [southboundTimetable, setSouthboundTimetable] = useState([]);
   const [loading, setLoading] = useState(false); 
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString()); // 現在の時刻を初期化
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString()); 
   const [nextTrainTime, setNextTrainTime] = useState(""); // 次の電車の時間
-  const [nextTrainTimeMinus10, setNextTrainTimeMinus10] = useState(""); // 次の電車の時間 -10分
+  const [nextTrainTimeMinus10, setNextTrainTimeMinus10] = useState(""); 
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date().toLocaleTimeString());
-    }, 1000); // 1秒ごとに現在時刻を更新
+    }, 1000); 
     return () => clearInterval(interval);
   }, []);
 
@@ -38,7 +38,6 @@ function App() {
         setSouthboundTimetable(data.filter(item => item.railDirection === 'Southbound'));
       }
 
-      // 次の電車の時間とその-10分の時間を設定
       if (data.length > 0) {
         const nextTrain = new Date(data[0].departureTime);
         setNextTrainTime(nextTrain.toLocaleTimeString());
