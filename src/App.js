@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import Amplify from 'aws-amplify';
+import awsconfig from './aws-exports';
 import { API } from 'aws-amplify';
+
+Amplify.configure(awsconfig);
 
 function App() {
   const [northboundTimetable, setNorthboundTimetable] = useState([]);
@@ -16,8 +20,7 @@ function App() {
       now.setHours(now.getHours() + 9); // JSTに変換するために9時間を加算
       now.setMinutes(now.getMinutes() + 10); // さらに10分を加算
       const timeString = now.toTimeString().substr(0, 5); // 時間をHH:MM形式に変換
-      const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/TimeTable?time=${timeString}`;
-
+      const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/TimeTable?time=${timeString}`; // ここにAPIのURLを入力
 
       // API.getの呼び出し部分
       const response = await fetch(apiUrl);
@@ -39,28 +42,3 @@ function App() {
       <header className="App-header">
         <h1>次の電車</h1>
         <div>
-          <h2>上北台行き (北行き)</h2>
-          <ul>
-            {northboundTimetable.map((item, index) => (
-              <li key={index}>
-                {item.station} - {item.departureTime} - {item.destinationStation}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h2>多摩センター行き (南行き)</h2>
-          <ul>
-            {southboundTimetable.map((item, index) => (
-              <li key={index}>
-                {item.station} - {item.departureTime} - {item.destinationStation}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </header>
-    </div>
-  );
-}
-
-export default App;
