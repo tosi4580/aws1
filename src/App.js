@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Amplify, Auth, API } from 'aws-amplify'; 
 import awsconfig from './aws-exports';
@@ -9,18 +9,23 @@ function App() {
   const [northboundTimetable, setNorthboundTimetable] = useState([]);
   const [southboundTimetable, setSouthboundTimetable] = useState([]);
   const [loading, setLoading] = useState(false); // ローディング状態を追加
-  const [currentTime, setCurrentTime] = useState(""); // 現在の時刻を保存
-  const [currentTimePlus10, setCurrentTimePlus10] = useState(""); // 現在の時刻にプラス10分した時刻を保存
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString()); // 現在の時刻を保存
+  const [trainDepartureTime, setTrainDepartureTime] = useState(""); // 次の電車の時刻を保存
+  const [trainDepartureMinus10, setTrainDepartureMinus10] = useState(""); // 次の電車の時刻-10分を保存
+
+  // 現在時刻を更新するためのエフェクト
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    }, 1000); // 1秒ごとに現在時刻を更新
+    return () => clearInterval(intervalId);
+  }, []);
 
   const fetchTimetable = async (direction) => {
     setLoading(true); // ローディング状態を設定
     try {
       const now = new Date();
-      setCurrentTime(now.toLocaleTimeString()); // 現在の時刻を保存
       const nowPlus10 = new Date(now.getTime() + 10 * 60000); // 現在の時刻に10分追加
-      setCurrentTimePlus10(nowPlus10.toLocaleTimeString()); // 現在の時刻にプラス10分した時刻を保存
-      now.setHours(now.getHours() + 9); 
-      now.setMinutes(now.getMinutes() + 10); 
       const timeString = now.toTimeString().substr(0, 5); 
       const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/TimeTable?time=${timeString}`;
 
@@ -28,52 +33,19 @@ function App() {
       const data = await response.json();
       
       if (direction === 'Northbound') {
-        setNorthboundTimetable(data.filter(item => item.railDirection === 'Northbound'));
+        const northbound = data.filter(item => item.railDirection === 'Northbound');
+        setNorthboundTimetable(northbound);
+        if (northbound.length > 0) {
+          const departureTime = new Date(now.getTime() + 10 * 60000).toLocaleTimeString();
+          const departureMinus10 = new Date(now.getTime()).toLocaleTimeString();
+          setTrainDepartureTime(departureTime);
+          setTrainDepartureMinus10(departureMinus10);
+        }
       } else {
-        setSouthboundTimetable(data.filter(item => item.railDirection === 'Southbound'));
-      }
-    } catch (error) {
-      console.error('Error fetching timetable:', error);
-    } finally {
-      setLoading(false); // ローディング状態を解除
-    }
-  };
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1> {currentTime}</h1>
-        <h1>乗れる次の電車は...</h1>
-        <div> {currentTime}に出れば間に合う ({currentTimePlus10} に出発予定)</div>
-        <div className="button-container">
-          <button onClick={() => fetchTimetable('Northbound')} disabled={loading} className="fetch-button">
-            {loading ? '読み込み中...' : '上北台行き'}
-          </button>
-          <button onClick={() => fetchTimetable('Southbound')} disabled={loading} className="fetch-button">
-            {loading ? '読み込み中...' : '多摩センター行き'}
-          </button>
-        </div>
-      </header>
-      <div>
-        <ul>
-          {northboundTimetable.map((item, index) => (
-            <li key={index}>
-              {item.station} - {item.departureTime} - {item.destinationStation}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <ul>
-          {southboundTimetable.map((item, index) => (
-            <li key={index}>
-              {item.station} - {item.departureTime} - {item.destinationStation}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
-export default App;
+        const southbound = data.filter(item => item.railDirection === 'Southbound');
+        setSouthboundTimetable(southbound);
+        if (southbound.length > 0) {
+          const departureTime = new Date(now.getTime() + 10 * 60000).toLocaleTimeString();
+          const departureMinus10 = new Date(now.getTime()).toLocaleTimeString();
+          setTrainDepartureTime(departureTime);
+          setTrain
