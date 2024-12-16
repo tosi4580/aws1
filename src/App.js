@@ -49,3 +49,8 @@ function App() {
           const departureMinus10 = new Date(now.getTime()).toLocaleTimeString();
           setTrainDepartureTime(departureTime);
           setTrain
+        }
+      }
+    }
+  }
+}
