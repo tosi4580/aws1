@@ -43,7 +43,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>次の電車</h1>
-        <div>次の電車は {currentTime} ({currentTimePlus10} に出発予定)</div>
+        <div> {currentTime}に出れば間に合う ({currentTimePlus10} に出発予定)</div>
         <div className="button-container">
           <button onClick={() => fetchTimetable('Northbound')} disabled={loading} className="fetch-button">
             {loading ? '読み込み中...' : '上北台行き'}
