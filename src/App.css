@@ -13,6 +13,7 @@
   color: white;
 }
 
+/* リンクボタンのスタイル */
 a { 
   color: #61dafb; 
   text-decoration: none; 
@@ -23,22 +24,16 @@ a {
   border: none; 
   border-radius: 4px;  
   transition: background-color 0.3s ease;
-} 
+}
+
 a:hover { 
   background-color: #005D4D ;
 }
 
+/* 太字ボタンのスタイル */
 b { 
   color: #f58f98; 
   text-decoration: none; 
   cursor: pointer; 
   padding: 8px 16px; 
-  background-color: #f58f98; 
-  color: white;  
-  border: none; 
-  border-radius: 4px;  
-  transition: background-color 0.3s ease; 
-} 
-b:hover { 
-  background-color: #c93c3c;
-}
+  background
