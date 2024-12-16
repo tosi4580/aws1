@@ -55,10 +55,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>次の電車</h1>
+        <h1>研究室から電車に乗るまで</h1>
         <div>現在時刻: {currentTime}</div>
         <div>次の電車の時間: {nextTrainTime}</div>
-        <div>次の電車の時間 - 10分: {nextTrainTimeMinus10}</div>
+        <div>: {nextTrainTimeMinus10}までに研究室を出る</div>
         <div className="button-container">
           <button onClick={() => fetchTimetable('Northbound')} disabled={loading} className="fetch-button">
             {loading ? '読み込み中...' : '上北台行き'}
