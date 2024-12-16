@@ -10,7 +10,7 @@ function App() {
   const [southboundTimetable, setSouthboundTimetable] = useState([]);
   const [loading, setLoading] = useState(false); 
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString()); 
-  const [nextTrainTime, setNextTrainTime] = useState(""); // 次の電車の時間
+  const [nextTrainTime, setNextTrainTime] = useState(""); 
   const [nextTrainTimeMinus10, setNextTrainTimeMinus10] = useState(""); 
 
   useEffect(() => {
