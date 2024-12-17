@@ -9,13 +9,13 @@ function App() {
   const [northboundTimetable, setNorthboundTimetable] = useState([]);
   const [southboundTimetable, setSouthboundTimetable] = useState([]);
   const [loading, setLoading] = useState(false); 
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
   const [closestTrainTime, setClosestTrainTime] = useState(""); 
   const [direction, setDirection] = useState(""); 
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString());
+      setCurrentTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
     }, 1000); 
     return () => clearInterval(interval);
   }, []);
@@ -25,7 +25,6 @@ function App() {
     setDirection(direction); 
     try {
       const now = new Date();
-      now.setHours(now.getHours() + 9); 
       now.setMinutes(now.getMinutes() + 10); 
       const timeString = now.toTimeString().substr(0, 5); 
       const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/TimeTable?time=${timeString}`;
@@ -45,17 +44,17 @@ function App() {
       // 最も近い時間を見つける
       if (timetable.length > 0) {
         const currentPlus10 = new Date();
-        currentPlus10.setHours(now.getHours() - 9);
-        currentPlus10.setMinutes(now.getMinutes());
-
+        currentPlus10.setMinutes(currentPlus10.getMinutes() + 10);
         const closest = timetable.reduce((prev, curr) => {
           const prevTime = new Date();
-          prevTime.setHours(parseInt(prev.departureTime.split(':')[0]));
-          prevTime.setMinutes(parseInt(prev.departureTime.split(':')[1]));
+          const [prevHour, prevMinute] = prev.departureTime.split(':').map(Number);
+          prevTime.setHours(prevHour);
+          prevTime.setMinutes(prevMinute);
 
           const currTime = new Date();
-          currTime.setHours(parseInt(curr.departureTime.split(':')[0]));
-          currTime.setMinutes(parseInt(curr.departureTime.split(':')[1]));
+          const [currHour, currMinute] = curr.departureTime.split(':').map(Number);
+          currTime.setHours(currHour);
+          currTime.setMinutes(currMinute);
 
           return Math.abs(currTime - currentPlus10) < Math.abs(prevTime - currentPlus10) ? curr : prev;
         });
@@ -73,7 +72,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>研究室から駅まで</h1>
+        <h1>次の電車</h1>
         <div>現在時刻: {currentTime}</div>
         <div>{direction === 'Northbound' ? '上北台行き' : '多摩センター行き'}の次の電車: {closestTrainTime}</div>
         <div className="button-container">
@@ -86,25 +85,3 @@ function App() {
         </div>
       </header>
       <div>
-        <ul>
-          {northboundTimetable.map((item, index) => (
-            <li key={index}>
-              {item.station} - {item.departureTime} - {item.destinationStation}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <ul>
-          {southboundTimetable.map((item, index) => (
-            <li key={index}>
-              {item.station} - {item.departureTime} - {item.destinationStation}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
-export default App;
