@@ -38,11 +38,20 @@ function App() {
         setSouthboundTimetable(data.filter(item => item.railDirection === 'Southbound'));
       }
 
+      // 次の電車の時間とその-10分の時間を設定
       if (data.length > 0) {
-        const nextTrain = new Date(data[0].departureTime);
+        const nextTrain = new Date();
+        nextTrain.setHours(parseInt(data[0].departureTime.split(':')[0]));
+        nextTrain.setMinutes(parseInt(data[0].departureTime.split(':')[1]));
+
         setNextTrainTime(nextTrain.toLocaleTimeString());
+        
         const nextTrainMinus10 = new Date(nextTrain.getTime() - 10 * 60000);
         setNextTrainTimeMinus10(nextTrainMinus10.toLocaleTimeString());
+      } else {
+        // データがない場合、空白にリセット
+        setNextTrainTime("");
+        setNextTrainTimeMinus10("");
       }
     } catch (error) {
       console.error('Error fetching timetable:', error);
@@ -54,10 +63,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>研究室から電車に乗るまで</h1>
+        <h1>次の電車</h1>
         <div>現在時刻: {currentTime}</div>
         <div>次の電車の時間: {nextTrainTime}</div>
-        <div>: {nextTrainTimeMinus10}までに研究室を出る</div>
+        <div>次の電車の時間 - 10分: {nextTrainTimeMinus10}</div>
         <div className="button-container">
           <button onClick={() => fetchTimetable('Northbound')} disabled={loading} className="fetch-button">
             {loading ? '読み込み中...' : '上北台行き'}
