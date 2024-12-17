@@ -45,8 +45,9 @@ function App() {
       // 最も近い時間を見つける
       if (timetable.length > 0) {
         const currentPlus10 = new Date();
-        currentPlus10.setHours(now.getHours() + 9);
-        currentPlus10.setMinutes(now.getMinutes() + 10);
+        currentPlus10.setHours(now.getHours() - 9);
+        currentPlus10.setMinutes(now.getMinutes());
+
         const closest = timetable.reduce((prev, curr) => {
           const prevTime = new Date();
           prevTime.setHours(parseInt(prev.departureTime.split(':')[0]));
@@ -72,7 +73,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>研究室からモノレール</h1>
+        <h1>研究室から駅まで</h1>
         <div>現在時刻: {currentTime}</div>
         <div>{direction === 'Northbound' ? '上北台行き' : '多摩センター行き'}の次の電車: {closestTrainTime}</div>
         <div className="button-container">
