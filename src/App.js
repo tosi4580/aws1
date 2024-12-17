@@ -72,7 +72,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>次の電車</h1>
+        <h1>研究室からモノレール</h1>
         <div>現在時刻: {currentTime}</div>
         <div>{direction === 'Northbound' ? '上北台行き' : '多摩センター行き'}の次の電車: {closestTrainTime}</div>
         <div className="button-container">
