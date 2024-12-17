@@ -85,3 +85,25 @@ function App() {
         </div>
       </header>
       <div>
+        <ul>
+          {northboundTimetable.map((item, index) => (
+            <li key={index}>
+              {item.station} - {item.departureTime} - {item.destinationStation}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <ul>
+          {southboundTimetable.map((item, index) => (
+            <li key={index}>
+              {item.station} - {item.departureTime} - {item.destinationStation}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default App;
