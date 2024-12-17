@@ -9,13 +9,13 @@ function App() {
   const [northboundTimetable, setNorthboundTimetable] = useState([]);
   const [southboundTimetable, setSouthboundTimetable] = useState([]);
   const [loading, setLoading] = useState(false); 
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
   const [closestTrainTime, setClosestTrainTime] = useState(""); 
   const [direction, setDirection] = useState(""); 
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+      setCurrentTime(new Date().toLocaleTimeString());
     }, 1000); 
     return () => clearInterval(interval);
   }, []);
