@@ -36,11 +36,11 @@ function App() {
       let closestTime = "";
 
       if (direction === 'Northbound') {
-        const nextTime = new Date(`1970-01-01T${data.nextNorthboundTime}:00Z`);
-        closestTime = nextTime > tenMinutesLater ? data.nextNorthboundTime : "データなし";
+        const timesArray = data.northboundTimes || [data.nextNorthboundTime];
+        closestTime = findValidTime(timesArray, tenMinutesLater);
       } else {
-        const nextTime = new Date(`1970-01-01T${data.nextSouthboundTime}:00Z`);
-        closestTime = nextTime > tenMinutesLater ? data.nextSouthboundTime : "データなし";
+        const timesArray = data.southboundTimes || [data.nextSouthboundTime];
+        closestTime = findValidTime(timesArray, tenMinutesLater);
       }
 
       setClosestTrainTime(closestTime);
@@ -49,6 +49,19 @@ function App() {
     } finally {
       setLoading(false); 
     }
+  };
+
+  const findValidTime = (timesArray, tenMinutesLater) => {
+    for (let i = 0; i < timesArray.length; i++) {
+      const [hour, minute] = timesArray[i].split(':').map(Number);
+      const nextTime = new Date();
+      nextTime.setHours(hour, minute, 0, 0);
+
+      if (nextTime > tenMinutesLater) {
+        return timesArray[i];
+      }
+    }
+    return "データなし";
   };
 
   return (
