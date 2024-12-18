@@ -29,7 +29,7 @@ function App() {
       const response = await fetch(apiUrl);
       const data = await response.json();
 
-      console.log("Fetched data:", data);  // ここでデータをログ出力
+      console.log("Fetched data:", data);  
 
       let closestTime = "";
       if (direction === 'Northbound') {
@@ -49,7 +49,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>次の電車</h1>
+        <h1>おうちに帰ろう</h1>
         <div>現在時刻: {currentTime}</div>
         <div>{direction === 'Northbound' ? '上北台行き' : '多摩センター行き'}の次の電車: {closestTrainTime}</div>
         <div className="button-container">
