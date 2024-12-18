@@ -24,7 +24,6 @@ function App() {
     setLoading(true);
     try {
       const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/TimeTable`;
-
       const response = await fetch(apiUrl);
       const data = await response.json();
 
