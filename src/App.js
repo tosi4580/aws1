@@ -31,11 +31,16 @@ function App() {
 
       console.log("Fetched data:", data);  
 
+      const now = new Date();
+      const tenMinutesLater = new Date(now.getTime() + 10 * 60000);
       let closestTime = "";
+
       if (direction === 'Northbound') {
-        closestTime = data.nextNorthboundTime;
+        const validTimes = data.northboundTimes.filter(time => new Date(`1970-01-01T${time}:00Z`) > tenMinutesLater);
+        closestTime = validTimes[0] || "データなし";
       } else {
-        closestTime = data.nextSouthboundTime;
+        const validTimes = data.southboundTimes.filter(time => new Date(`1970-01-01T${time}:00Z`) > tenMinutesLater);
+        closestTime = validTimes[0] || "データなし";
       }
 
       setClosestTrainTime(closestTime);
