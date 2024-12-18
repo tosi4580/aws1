@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { Amplify } from 'aws-amplify'; 
+import { Amplify, Auth, API } from 'aws-amplify'; 
 import awsconfig from './aws-exports';
 
 Amplify.configure(awsconfig);
 
 function App() {
+  const [northboundTimetable, setNorthboundTimetable] = useState([]);
+  const [southboundTimetable, setSouthboundTimetable] = useState([]);
   const [loading, setLoading] = useState(false); 
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
-  const [firstNorthboundTime, setFirstNorthboundTime] = useState(""); 
-  const [firstSouthboundTime, setFirstSouthboundTime] = useState(""); 
+  const [closestTrainTime, setClosestTrainTime] = useState(""); 
+  const [direction, setDirection] = useState(""); 
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -20,15 +22,44 @@ function App() {
 
   const fetchTimetable = async (direction) => {
     setLoading(true);
+    setDirection(direction); 
     try {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 10); 
       const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/timetable`; 
+
       const response = await fetch(apiUrl);
       const data = await response.json();
 
-      if (direction === 'northbound') {
-        setFirstNorthboundTime(data.firstNorthboundTime || "データなし");
-      } else if (direction === 'southbound') {
-        setFirstSouthboundTime(data.firstSouthboundTime || "データなし");
+      let timetable = [];
+      if (direction === 'Northbound') {
+        timetable = data.filter(item => item.railDirection === 'odpt.RailDirection:Northbound');
+        setNorthboundTimetable(timetable);
+      } else {
+        timetable = data.filter(item => item.railDirection === 'odpt.RailDirection:Southbound');
+        setSouthboundTimetable(timetable);
+      }
+
+      // 最も近い時間を見つける
+      if (timetable.length > 0) {
+        const currentPlus10 = new Date();
+        currentPlus10.setMinutes(currentPlus10.getMinutes() + 10);
+        const closest = timetable.reduce((prev, curr) => {
+          const prevTime = new Date();
+          const [prevHour, prevMinute] = prev.departureTime.split(':').map(Number);
+          prevTime.setHours(prevHour);
+          prevTime.setMinutes(prevMinute);
+
+          const currTime = new Date();
+          const [currHour, currMinute] = curr.departureTime.split(':').map(Number);
+          currTime.setHours(currHour);
+          currTime.setMinutes(currMinute);
+
+          return Math.abs(currTime - currentPlus10) < Math.abs(prevTime - currentPlus10) ? curr : prev;
+        });
+        setClosestTrainTime(closest.departureTime);
+      } else {
+        setClosestTrainTime(""); 
       }
     } catch (error) {
       console.error('Error fetching timetable:', error);
@@ -42,17 +73,34 @@ function App() {
       <header className="App-header">
         <h1>次の電車</h1>
         <div>現在時刻: {currentTime}</div>
-        <div>最初の北行き電車の時間: {firstNorthboundTime}</div>
-        <div>最初の南行き電車の時間: {firstSouthboundTime}</div>
+        <div>{direction === 'Northbound' ? '上北台行き' : '多摩センター行き'}の次の電車: {closestTrainTime}</div>
         <div className="button-container">
-          <button onClick={() => fetchTimetable('northbound')} disabled={loading} className="fetch-button">
-            {loading ? '読み込み中...' : '北行きの時間を取得'}
+          <button onClick={() => fetchTimetable('Northbound')} disabled={loading} className="fetch-button">
+            {loading ? '読み込み中...' : '上北台行き'}
           </button>
-          <button onClick={() => fetchTimetable('southbound')} disabled={loading} className="fetch-button">
-            {loading ? '読み込み中...' : '南行きの時間を取得'}
+          <button onClick={() => fetchTimetable('Southbound')} disabled={loading} className="fetch-button">
+            {loading ? '読み込み中...' : '多摩センター行き'}
           </button>
         </div>
       </header>
+      <div>
+        <ul>
+          {northboundTimetable.map((item, index) => (
+            <li key={index}>
+              {item.station} - {item.departureTime} - {item.destinationStation}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <ul>
+          {southboundTimetable.map((item, index) => (
+            <li key={index}>
+              {item.station} - {item.departureTime} - {item.destinationStation}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
