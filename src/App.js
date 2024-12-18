@@ -18,25 +18,24 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  const fetchTimetable = async () => {
+  const fetchTimetable = async (direction) => {
     setLoading(true);
     try {
-      const apiUrl = `https://abcdefg123.execute-api.ap-northeast-1.amazonaws.com/prod/timetable`; // 
+      const apiUrl = `https://abcdefg123.execute-api.ap-northeast-1.amazonaws.com/prod/timetable`; // 確認したエンドポイントURL
       const response = await fetch(apiUrl);
       const data = await response.json();
 
-      setFirstNorthboundTime(data.firstNorthboundTime || "データなし");
-      setFirstSouthboundTime(data.firstSouthboundTime || "データなし");
+      if (direction === 'northbound') {
+        setFirstNorthboundTime(data.firstNorthboundTime || "データなし");
+      } else if (direction === 'southbound') {
+        setFirstSouthboundTime(data.firstSouthboundTime || "データなし");
+      }
     } catch (error) {
       console.error('Error fetching timetable:', error);
     } finally {
       setLoading(false); 
     }
   };
-
-  useEffect(() => {
-    fetchTimetable();
-  }, []);
 
   return (
     <div className="App">
@@ -45,6 +44,14 @@ function App() {
         <div>現在時刻: {currentTime}</div>
         <div>最初の北行き電車の時間: {firstNorthboundTime}</div>
         <div>最初の南行き電車の時間: {firstSouthboundTime}</div>
+        <div className="button-container">
+          <button onClick={() => fetchTimetable('northbound')} disabled={loading} className="fetch-button">
+            {loading ? '読み込み中...' : '北行きの時間を取得'}
+          </button>
+          <button onClick={() => fetchTimetable('southbound')} disabled={loading} className="fetch-button">
+            {loading ? '読み込み中...' : '南行きの時間を取得'}
+          </button>
+        </div>
       </header>
     </div>
   );
