@@ -36,11 +36,11 @@ function App() {
       let closestTime = "";
 
       if (direction === 'Northbound') {
-        const validTimes = data.northboundTimes.filter(time => new Date(`1970-01-01T${time}:00Z`) > tenMinutesLater);
-        closestTime = validTimes[0] || "データなし";
+        const nextTime = new Date(`1970-01-01T${data.nextNorthboundTime}:00Z`);
+        closestTime = nextTime > tenMinutesLater ? data.nextNorthboundTime : "データなし";
       } else {
-        const validTimes = data.southboundTimes.filter(time => new Date(`1970-01-01T${time}:00Z`) > tenMinutesLater);
-        closestTime = validTimes[0] || "データなし";
+        const nextTime = new Date(`1970-01-01T${data.nextSouthboundTime}:00Z`);
+        closestTime = nextTime > tenMinutesLater ? data.nextSouthboundTime : "データなし";
       }
 
       setClosestTrainTime(closestTime);
