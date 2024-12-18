@@ -41,6 +41,7 @@ function App() {
         setSouthboundTimetable(timetable);
       }
 
+      // 最も近い時間を見つける
       if (timetable.length > 0) {
         const currentPlus10 = new Date();
         currentPlus10.setMinutes(currentPlus10.getMinutes() + 10);
@@ -71,9 +72,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>次の電車</h1>
+        <h1>電車</h1>
         <div>現在時刻: {currentTime}</div>
-        <div>{closestTrainTime}</div>
         <div>{direction === 'Northbound' ? '上北台行き' : '多摩センター行き'}の次の電車: {closestTrainTime}</div>
         <div className="button-container">
           <button onClick={() => fetchTimetable('Northbound')} disabled={loading} className="fetch-button">
