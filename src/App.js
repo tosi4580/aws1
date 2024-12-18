@@ -10,8 +10,8 @@ function App() {
   const [southboundTimetable, setSouthboundTimetable] = useState([]);
   const [loading, setLoading] = useState(false); 
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
-  const [closestTrainTime, setClosestTrainTime] = useState(""); 
-  const [direction, setDirection] = useState(""); 
+  const [firstNorthboundTime, setFirstNorthboundTime] = useState(""); 
+  const [firstSouthboundTime, setFirstSouthboundTime] = useState(""); 
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -20,48 +20,28 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  const fetchTimetable = async (direction) => {
+  const fetchTimetable = async () => {
     setLoading(true);
-    setDirection(direction); 
     try {
-      const now = new Date();
-      now.setMinutes(now.getMinutes() + 10); 
-      const timeString = now.toTimeString().substr(0, 5); 
-      const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/TimeTable?time=${timeString}`;
+      const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/TimeTable`;
 
       const response = await fetch(apiUrl);
       const data = await response.json();
 
-      let timetable = [];
-      if (direction === 'Northbound') {
-        timetable = data.filter(item => item.railDirection === 'Northbound');
-        setNorthboundTimetable(timetable);
-      } else {
-        timetable = data.filter(item => item.railDirection === 'Southbound');
-        setSouthboundTimetable(timetable);
+      const northbound = data.filter(item => item.railDirection === 'Northbound');
+      const southbound = data.filter(item => item.railDirection === 'Southbound');
+
+      setNorthboundTimetable(northbound);
+      setSouthboundTimetable(southbound);
+
+      if (northbound.length > 0) {
+        setFirstNorthboundTime(northbound[0].departureTime);
       }
 
-      // 最も近い時間を見つける
-      if (timetable.length > 0) {
-        const currentPlus10 = new Date();
-        currentPlus10.setMinutes(currentPlus10.getMinutes() + 10);
-        const closest = timetable.reduce((prev, curr) => {
-          const prevTime = new Date();
-          const [prevHour, prevMinute] = prev.departureTime.split(':').map(Number);
-          prevTime.setHours(prevHour);
-          prevTime.setMinutes(prevMinute);
-
-          const currTime = new Date();
-          const [currHour, currMinute] = curr.departureTime.split(':').map(Number);
-          currTime.setHours(currHour);
-          currTime.setMinutes(currMinute);
-
-          return Math.abs(currTime - currentPlus10) < Math.abs(prevTime - currentPlus10) ? curr : prev;
-        });
-        setClosestTrainTime(closest.departureTime);
-      } else {
-        setClosestTrainTime(""); 
+      if (southbound.length > 0) {
+        setFirstSouthboundTime(southbound[0].departureTime);
       }
+      
     } catch (error) {
       console.error('Error fetching timetable:', error);
     } finally {
@@ -69,20 +49,17 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    fetchTimetable();
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
-        <h1>電車</h1>
+        <h1>次の電車</h1>
         <div>現在時刻: {currentTime}</div>
-        <div>{direction === 'Northbound' ? '上北台行き' : '多摩センター行き'}の次の電車: {closestTrainTime}</div>
-        <div className="button-container">
-          <button onClick={() => fetchTimetable('Northbound')} disabled={loading} className="fetch-button">
-            {loading ? '読み込み中...' : '上北台行き'}
-          </button>
-          <button onClick={() => fetchTimetable('Southbound')} disabled={loading} className="fetch-button">
-            {loading ? '読み込み中...' : '多摩センター行き'}
-          </button>
-        </div>
+        <div>最初の北行き電車の時間: {firstNorthboundTime}</div>
+        <div>最初の南行き電車の時間: {firstSouthboundTime}</div>
       </header>
       <div>
         <ul>
