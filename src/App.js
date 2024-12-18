@@ -24,49 +24,21 @@ function App() {
     setLoading(true);
     setDirection(direction); 
     try {
-      const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/timetable`; // 確認したエンドポイントURLを使用
+      const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/timetable`; 
 
       const response = await fetch(apiUrl);
       const data = await response.json();
 
       console.log("Fetched data:", data);  // ここでデータをログ出力
 
-      if (!Array.isArray(data)) {
-        console.error("Expected data to be an array but got:", typeof data);
-        setClosestTrainTime("データエラー");
-        return;
-      }
-
-      let timetable = [];
+      let closestTime = "";
       if (direction === 'Northbound') {
-        timetable = data.filter(item => item.railDirection === 'odpt.RailDirection:Northbound');
-        setNorthboundTimetable(timetable);
+        closestTime = data.nextNorthboundTime;
       } else {
-        timetable = data.filter(item => item.railDirection === 'odpt.RailDirection:Southbound');
-        setSouthboundTimetable(timetable);
+        closestTime = data.nextSouthboundTime;
       }
 
-      // 最も近い時間を見つける
-      if (timetable.length > 0) {
-        const currentPlus10 = new Date();
-        currentPlus10.setMinutes(currentPlus10.getMinutes() + 10);
-        const closest = timetable.reduce((prev, curr) => {
-          const prevTime = new Date();
-          const [prevHour, prevMinute] = prev.departureTime.split(':').map(Number);
-          prevTime.setHours(prevHour);
-          prevTime.setMinutes(prevMinute);
-
-          const currTime = new Date();
-          const [currHour, currMinute] = curr.departureTime.split(':').map(Number);
-          currTime.setHours(currHour);
-          currTime.setMinutes(currMinute);
-
-          return Math.abs(currTime - currentPlus10) < Math.abs(prevTime - currentPlus10) ? curr : prev;
-        });
-        setClosestTrainTime(closest.departureTime);
-      } else {
-        setClosestTrainTime(""); 
-      }
+      setClosestTrainTime(closestTime);
     } catch (error) {
       console.error('Error fetching timetable:', error);
     } finally {
