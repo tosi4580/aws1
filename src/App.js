@@ -24,12 +24,18 @@ function App() {
     setLoading(true);
     setDirection(direction); 
     try {
-      const now = new Date();
-      now.setMinutes(now.getMinutes() + 10); 
-      const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/timetable`; 
+      const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/timetable`; // 確認したエンドポイントURLを使用
 
       const response = await fetch(apiUrl);
       const data = await response.json();
+
+      console.log("Fetched data:", data);  // ここでデータをログ出力
+
+      if (!Array.isArray(data)) {
+        console.error("Expected data to be an array but got:", typeof data);
+        setClosestTrainTime("データエラー");
+        return;
+      }
 
       let timetable = [];
       if (direction === 'Northbound') {
