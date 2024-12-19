@@ -6,40 +6,40 @@ import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
 function App() {
-  const [northboundTimetable, setNorthboundTimetable] = useState([]);
-  const [southboundTimetable, setSouthboundTimetable] = useState([]);
-  const [loading, setLoading] = useState(false); 
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
-  const [closestTrainTime, setClosestTrainTime] = useState(""); 
-  const [direction, setDirection] = useState(""); 
+  let [northboundTimetable, setNorthboundTimetable] = useState([]);
+  let [southboundTimetable, setSouthboundTimetable] = useState([]);
+  let [loading, setLoading] = useState(false); 
+  let [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
+  let [closestTrainTime, setClosestTrainTime] = useState(""); 
+  let [direction, setDirection] = useState(""); 
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    let interval = setInterval(() => {
       setCurrentTime(new Date().toLocaleTimeString());
     }, 1000); 
     return () => clearInterval(interval);
   }, []);
 
-  const fetchTimetable = async (direction) => {
+  let fetchTimetable = async (direction) => {
     setLoading(true);
     setDirection(direction); 
     try {
-      const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/timetable`; 
+      let apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/timetable`; 
 
-      const response = await fetch(apiUrl);
-      const data = await response.json();
+      let response = await fetch(apiUrl);
+      let data = await response.json();
 
       console.log("Fetched data:", data);  
 
-      const now = new Date();
-      const tenMinutesLater = new Date(now.getTime() + 10 * 60000);
+      let now = new Date();
+      let tenMinutesLater = new Date(now.getTime() + 10 * 60000);
       let closestTime = "";
 
       if (direction === 'Northbound') {
-        const timesArray = data.northboundTimes || [data.nextNorthboundTime];
+        let timesArray = data.northboundTimes || [data.nextNorthboundTime];
         closestTime = findValidTime(timesArray, tenMinutesLater);
       } else {
-        const timesArray = data.southboundTimes || [data.nextSouthboundTime];
+        let timesArray = data.southboundTimes || [data.nextSouthboundTime];
         closestTime = findValidTime(timesArray, tenMinutesLater);
       }
 
@@ -51,10 +51,10 @@ function App() {
     }
   };
 
-  const findValidTime = (timesArray, tenMinutesLater) => {
+  let findValidTime = (timesArray, tenMinutesLater) => {
     for (let i = 0; i < timesArray.length; i++) {
-      const [hour, minute] = timesArray[i].split(':').map(Number);
-      const nextTime = new Date();
+      let [hour, minute] = timesArray[i].split(':').map(Number);
+      let nextTime = new Date();
       nextTime.setHours(hour, minute, 0, 0);
 
       if (nextTime > tenMinutesLater) {
