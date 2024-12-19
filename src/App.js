@@ -52,17 +52,22 @@ function App() {
   };
 
   const findValidTime = (timesArray, tenMinutesLater) => {
-    for (let i = 0; i < timesArray.length; i++) {
-      const [hour, minute] = timesArray[i].split(':').map(Number);
-      const nextTime = new Date();
-      nextTime.setHours(hour, minute, 0, 0);
+  let closestTime = "まだ帰れません";
+  
+  for (let i = 0; i < timesArray.length; i++) {
+    const [hour, minute] = timesArray[i].split(':').map(Number);
+    const nextTime = new Date();
+    nextTime.setHours(hour, minute, 0, 0);
 
-      if (nextTime > tenMinutesLater) {
-        return timesArray[i];
-      }
+    if (nextTime > tenMinutesLater) {
+      closestTime = timesArray[i];
+      break;
     }
-    return "まだ帰れません";
-  };
+  }
+
+  return closestTime;
+};
+
 
   return (
     <div className="App">
