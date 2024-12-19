@@ -61,7 +61,7 @@ function App() {
         return timesArray[i];
       }
     }
-    return "データなし";
+    return "まだ帰れません";
   };
 
   return (
