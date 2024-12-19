@@ -68,42 +68,42 @@ function App() {
   return closestTime;
 };
 
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>おうちに帰ろう</h1>
-        <div>現在時刻: {currentTime}</div>
-        <div>{direction === 'Northbound' ? '上北台行き' : '多摩センター行き'}の次の電車: {closestTrainTime}</div>
-        <div className="button-container">
-          <button onClick={() => fetchTimetable('Northbound')} disabled={loading} className="fetch-button">
-            {loading ? '読み込み中...' : '上北台行き'}
-          </button>
-          <button onClick={() => fetchTimetable('Southbound')} disabled={loading} className="fetch-button">
-            {loading ? '読み込み中...' : '多摩センター行き'}
-          </button>
-        </div>
-      </header>
-      <div>
-        <ul>
-          {northboundTimetable.map((item, index) => (
-            <li key={index}>
-              {item.station} - {item.departureTime} - {item.destinationStation}
-            </li>
-          ))}
-        </ul>
+return (
+  <div className="App">
+    <header className="App-header">
+      <h1>おうちに帰ろう</h1>
+      <div>現在時刻: {currentTime}</div>
+      <div>{direction === 'Northbound' ? '上北台行き' : '多摩センター行き'}の次の電車: {closestTrainTime}</div>
+      <div className="button-container">
+        <button onClick={() => fetchTimetable('Northbound')} disabled={loading} className="fetch-button">
+          {loading ? '読み込み中...' : '上北台行き'}
+        </button>
+        <button onClick={() => fetchTimetable('Southbound')} disabled={loading} className="fetch-button">
+          {loading ? '読み込み中...' : '多摩センター行き'}
+        </button>
       </div>
-      <div>
-        <ul>
-          {southboundTimetable.map((item, index) => (
-            <li key={index}>
-              {item.station} - {item.departureTime} - {item.destinationStation}
-            </li>
-          ))}
-        </ul>
-      </div>
+    </header>
+    <div>
+      <ul>
+        {northboundTimetable.map((item, index) => (
+          <li key={index}>
+            {item.station} - {item.departureTime} - {item.destinationStation}
+          </li>
+        ))}
+      </ul>
     </div>
-  );
-}
+    <div>
+      <ul>
+        {southboundTimetable.map((item, index) => (
+          <li key={index}>
+            {item.station} - {item.departureTime} - {item.destinationStation}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+);
+
+              
 
 export default App;
