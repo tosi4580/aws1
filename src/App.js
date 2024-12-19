@@ -24,7 +24,7 @@ function App() {
     setLoading(true);
     setDirection(direction); 
     try {
-      let apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/timetable`; 
+      const apiUrl = `https://xy2igd6s8k.execute-api.ap-northeast-1.amazonaws.com/prod/timetable`; 
 
       const response = await fetch(apiUrl);
       const data = await response.json();
